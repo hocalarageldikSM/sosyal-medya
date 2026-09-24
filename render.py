@@ -46,15 +46,15 @@ def doldur(sablon, v):
     if sablon == "duyuru":
         alanlar["satirlar"] = "".join(f'<div class="satir"><b>{esc(k)}</b><span>{esc(d)}</span></div>' for k, d in v["satirlar"])
     if sablon == "duyuru":
-        logo = v.get("kaynak_logo")  # resmi kurum logosu dosyası (varsa); yoksa metin rozeti
-        ic = f'<img src="{esc(logo)}">' if logo else f'<div class="yer">{esc(v["kaynak"])}<br>logosu</div>'
+        logo = v.get("kaynak_logo")  # resmi kurum logosu dosyası (varsa); yoksa sadece metin rozeti
+        ic = f'<img src="{esc(logo)}">' if logo else ''
         alanlar["kaynak_rozet"] = f'<div class="rozet">{ic}<div><small>Kaynak</small><b>{esc(v["kaynak"])}</b></div></div>'
     SERI = {"Öğretmen gündemi": "#3A589E", "Memur gündemi": "#184077", "KPSS gündemi": "#F19107", "Bilgi kartı": "#3A589E"}
     if sablon == "gundem":
         alanlar["seri_renk"] = SERI.get(v["seri"], "#3A589E")
         alanlar["maddeler"] = "".join(f'<div class="madde"><b>{esc(k)}</b><span>{esc(d)}</span></div>' for k, d in v["maddeler"])
         logo = v.get("kaynak_logo")
-        ic = f'<img src="{esc(logo)}">' if logo else f'<div class="yer">{esc(v["kaynak"])}<br>logosu</div>'
+        ic = f'<img src="{esc(logo)}">' if logo else ''
         alanlar["kaynak_rozet"] = f'<div class="rozet">{ic}<div><small>Kaynak</small><b>{esc(v["kaynak"])}</b></div></div>'
     if sablon == "tuyo":
         o = v.get("ornek")
