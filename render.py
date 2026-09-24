@@ -8,7 +8,7 @@ T = KOK / "templates"
 
 # ---- Zemin dokusu: kareli defter + karalama + turuncu tarama (bkz. blueprint 4b) ----
 import math, random
-ZEMIN_TUR = {"duyuru": ("koyu", "#FFFFFF", .13, .55), "karusel_kapak": ("koyu", "#FFFFFF", .13, .55),
+ZEMIN_TUR = {"manset": ("koyu", "#FFFFFF", .10, 0), "bilgi": ("koyu", "#FFFFFF", .10, 0), "duyuru": ("koyu", "#FFFFFF", .13, .55), "karusel_kapak": ("koyu", "#FFFFFF", .13, .55),
              "karusel_son": ("koyu", "#FFFFFF", .13, .55), "haftalik_ozet": ("koyu", "#FFFFFF", .13, .55),
              "tuyo": ("koyu", "#FFFFFF", .14, .9), "karusel_adim": ("acik", "#3A589E", .16, .45),
              "gundem": ("beyaz", "#3A589E", .12, .35), "sube": ("beyaz", "#3A589E", .12, .35)}
@@ -37,7 +37,7 @@ def zemin(sablon):
 def esc(s): return html.escape(str(s))
 
 # Başlık alanı: başlangıç puntosu ve izin verilen maksimum yükseklik (px)
-SIGDIR = {"gundem": (104, 330), "tuyo": (84, 260), "haftalik_ozet": (96, 220), "duyuru": (118, 380), "sube": (112, 260), "karusel_kapak": (150, 560),
+SIGDIR = {"manset": (96, 470), "bilgi": (92, 250), "gundem": (104, 330), "tuyo": (84, 260), "haftalik_ozet": (96, 220), "duyuru": (118, 380), "sube": (112, 260), "karusel_kapak": (150, 560),
           "karusel_adim": (88, 300), "karusel_son": (104, 440)}
 
 def doldur(sablon, v):
@@ -68,6 +68,28 @@ def doldur(sablon, v):
     if sablon == "haftalik_ozet":
         R = {"Öğretmen": "#3A589E", "Memur": "#F15725", "KPSS": "#F19107", "LGS": "#3A589E", "YKS": "#F19107"}
         alanlar["ogeler"] = "".join(f'<div class="oge"><i style="background:{R.get(k,"#3A589E")}">{esc(k)}</i><span>{esc(d)}</span></div>' for k, d in v["ogeler"])
+    if sablon == "manset":
+        kelimeler = str(v["baslik"]).split()
+        satirlar, cur = [], ""
+        for k in kelimeler:  # basligi 2-4 blok satira bol
+            if cur and len(cur) + 1 + len(k) > 14:
+                satirlar.append(cur); cur = k
+            else:
+                cur = (cur + " " + k).strip()
+        if cur: satirlar.append(cur)
+        alanlar["bloklar"] = "".join(f'<div class="blok">{esc(x)}</div>' for x in satirlar[:4])
+        alanlar["ogr_boy"] = v.get("ogr_boy", 1020)
+        alanlar["etiket"] = v.get("etiket", "Günün tüyosu")
+        o = v.get("ornek")
+        alanlar["ornek_kutu"] = f'<div class="ornek"><small>{esc(o[0])}</small><div>{esc(o[1])}</div></div>' if o else ""
+    if sablon == "bilgi":
+        alanlar["maddeler"] = "".join(f'<div class="madde"><b>{esc(k)}</b><span>{esc(d)}</span></div>' for k, d in v["maddeler"])
+        alanlar["hedef"] = v.get("hedef", "")
+        logo = v.get("kaynak_logo")
+        ic = f'<img src="{esc(logo)}">' if logo else ''
+        kay = str(v.get("kaynak", "")).strip()
+        alanlar["kaynak_rozet"] = ("<div></div>" if kay.lower() in ("hocalara geldik", "") else
+            f'<div class="rozet">{ic}<div><small>Kaynak</small><b>{esc(kay)}</b></div></div>')
     if sablon == "sube":
         alanlar["bilgiler"] = "".join(f'<div><b>{esc(k)}</b><span>{esc(d)}</span></div>' for k, d in v["bilgiler"])
     if sablon == "karusel_adim":
@@ -78,7 +100,7 @@ def doldur(sablon, v):
         s = s.replace('<div class="frame">', '<div class="frame ayna">', 1)
     for k, d in alanlar.items():
         if isinstance(d, (str, int)):
-            d = d if k in ("satirlar", "bilgiler", "ilerleme", "kaynak_rozet", "maddeler", "ornek_kutu", "alt_blok", "ogeler", "seri_renk", "zemin") else esc(d)
+            d = d if k in ("satirlar", "bilgiler", "ilerleme", "kaynak_rozet", "maddeler", "ornek_kutu", "alt_blok", "ogeler", "seri_renk", "zemin", "bloklar", "ogr_boy") else esc(d)
             s = s.replace("{{" + k + "}}", str(d))
     return s
 
