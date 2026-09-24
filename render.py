@@ -61,7 +61,7 @@ def doldur(sablon, v):
         alanlar["ornek_kutu"] = f'<div class="ornek"><small>{esc(o[0])}</small><div>{esc(o[1])}</div></div>' if o else ""
         c = v.get("cagri")  # şube çağrısı (isteğe bağlı)
         k = v.get("anahtar")  # DM anahtar kelimesi (ör. PLAN)
-        alanlar["alt_blok"] = (f'<div class="cagri"><b>{esc(c)}</b>' + (f'<span>{esc(k)}</span>' if k else '') + '</div>' if c
+        alanlar["alt_blok"] = (f'<div class="cagri"><b style="font-size:{32 if len(str(c)) > 44 else 40}px">{esc(c)}</b>' + (f'<span>{esc(k)}</span>' if k else '') + '</div>' if c
                                else '')  # logo zaten üstte; alta ikinci logo konmaz
     if sablon == "haftalik_ozet":
         R = {"Öğretmen": "#3A589E", "Memur": "#F15725", "KPSS": "#F19107", "LGS": "#3A589E", "YKS": "#F19107"}
