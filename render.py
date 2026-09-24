@@ -56,6 +56,8 @@ def doldur(sablon, v):
         logo = v.get("kaynak_logo")
         ic = f'<img src="{esc(logo)}">' if logo else ''
         alanlar["kaynak_rozet"] = f'<div class="rozet">{ic}<div><small>Kaynak</small><b>{esc(v["kaynak"])}</b></div></div>'
+        if str(v.get("kaynak", "")).strip().lower() in ("hocalara geldik", ""):
+            alanlar["kaynak_rozet"] = "<div></div>"  # genel tavsiye: kaynak rozeti gosterme
     if sablon == "tuyo":
         o = v.get("ornek")
         alanlar["ornek_kutu"] = f'<div class="ornek"><small>{esc(o[0])}</small><div>{esc(o[1])}</div></div>' if o else ""
