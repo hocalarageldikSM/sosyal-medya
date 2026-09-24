@@ -1,0 +1,21 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+.frame{background:var(--mavi);padding:70px 70px 190px;display:flex;flex-direction:column}
+.ust{display:flex;justify-content:space-between;align-items:center}
+.ust img{width:430px}
+.sinav{font-family:"Anton";font-size:64px;color:var(--lacivert);background:#fff;border-radius:26px;padding:10px 34px 14px;transform:rotate(4deg);box-shadow:0 10px 0 var(--turuncu)}
+.kart{margin:auto 0;background:#fff;border-radius:40px;padding:84px 60px 56px;transform:rotate(-1.2deg);box-shadow:0 16px 0 var(--lacivert);position:relative}
+.kart .etiket{position:absolute;top:-40px;left:50px;background:var(--turuncu);font-size:50px;padding:16px 38px 20px;box-shadow:0 8px 0 var(--kiremit)}
+h1{font-size:{{baslik_boyut}}px;color:var(--lacivert)}
+.aciklama{margin-top:28px;font-size:34px;font-weight:500;line-height:1.42;color:var(--soluk)}
+.ornek{margin-top:34px;background:var(--turuncu);border-radius:26px;padding:26px 34px;transform:rotate(1deg)}
+.ornek small{display:block;font-size:22px;font-weight:800;color:var(--lacivert);margin-bottom:6px}
+.ornek div{font-family:"Anton";font-size:52px;color:#fff;line-height:1.15}
+.cagri{position:absolute;left:0;right:0;bottom:0;background:var(--turuncu);color:#fff;padding:34px 70px 38px;display:flex;align-items:center;gap:28px}
+.cagri b{font-family:"Anton";font-size:40px;line-height:1.1;flex:1}
+.cagri span{flex:none;background:#fff;color:var(--kiremit);font-family:"Anton";font-size:44px;border-radius:18px;padding:8px 26px 12px;transform:rotate(-3deg)}
+.imza{position:absolute;right:70px;bottom:60px;height:56px}
+</style></head><body><div class="frame">{{zemin}}
+<div class="ust"><img class="hg-logo" src="../logos/bm_kutu_planlama.png"><div class="sinav">{{sinav}}</div></div>
+<div class="kart"><div class="etiket">Günün tüyosu</div><h1 class="anton">{{baslik}}</h1><p class="aciklama">{{aciklama}}</p>{{ornek_kutu}}</div>
+{{alt_blok}}
+</div></body></html>

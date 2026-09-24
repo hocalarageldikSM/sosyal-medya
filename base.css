@@ -1,0 +1,28 @@
+@font-face{font-family:"Anton";src:url("../fonts/Anton-Regular.ttf");}
+@font-face{font-family:"Montserrat";src:url("../fonts/Montserrat.ttf");font-weight:100 900;}
+:root{
+  --mavi:#3A589E; --lacivert:#184077; --turuncu:#F19107; --kiremit:#F15725; --beyaz:#FFFFFF;
+  --zemin:#F2F5FB; --metin:#184077; --soluk:#5A6F95;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden}
+body{font-family:"Montserrat",sans-serif;color:var(--metin);-webkit-font-smoothing:antialiased}
+.frame{position:relative;width:1080px;height:1350px;overflow:hidden}
+.anton{font-family:"Anton",sans-serif;font-weight:400;letter-spacing:.5px;line-height:1.02}
+/* marka imzası: logodaki eğik kutu */
+.etiket{display:inline-block;font-family:"Anton";font-size:44px;line-height:1;padding:18px 34px 20px;border-radius:22px;transform:rotate(-2.5deg);color:#fff}
+.kaynak{font-size:24px;font-weight:600;opacity:.8}
+@font-face{font-family:"Caveat";src:url("../fonts/Caveat.ttf");font-weight:400 700;}
+/* ZEMİN DOLULUĞU: kareli defter + karalama katmanı + tarama lekesi */
+.zemin{position:absolute;inset:0;pointer-events:none;z-index:0}
+.frame>*:not(.zemin){position:relative;z-index:1}
+.frame>.tarama,.frame>.cagri,.frame>.imza,.frame>.alt,.frame>.bant,.frame>.kaydir,.frame>.logo,.frame>.ilerleme,.frame>.cizgi,.frame>.amblem{position:absolute}
+.kareli-koyu{background-image:linear-gradient(rgba(255,255,255,.07) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.07) 2px,transparent 2px);background-size:54px 54px}
+.kareli-acik{background-image:linear-gradient(rgba(58,88,158,.10) 2px,transparent 2px),linear-gradient(90deg,rgba(58,88,158,.10) 2px,transparent 2px);background-size:54px 54px}
+.kareli-beyaz{background-image:linear-gradient(rgba(58,88,158,.07) 2px,transparent 2px),linear-gradient(90deg,rgba(58,88,158,.07) 2px,transparent 2px);background-size:54px 54px}
+.not-yazi{position:absolute;font-family:"Caveat";font-weight:700;white-space:nowrap;line-height:1}
+.tarama{position:absolute;border-radius:48% 52% 44% 56%/55% 45% 55% 45%;background:repeating-linear-gradient(-50deg,currentColor 0 7px,transparent 7px 20px)}
+.ayna svg.zemin{transform:scaleX(-1)} .ayna .tarama{right:auto!important;left:-110px}
+
+/* LOGO: mevcut tasarımlardaki gibi etiket (sticker): düz, beyaz dış kontur, yumuşak gölge */
+.hg-logo{filter:drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 16px 18px rgba(0,0,0,.28))}

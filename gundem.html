@@ -1,0 +1,23 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+.frame{background:#fff;padding:96px 88px 220px;display:flex;flex-direction:column;justify-content:center}
+.seri{align-self:flex-start;background:{{seri_renk}}}
+h1{font-size:{{baslik_boyut}}px;color:var(--lacivert);margin-top:52px;max-width:900px}
+.ozet{margin-top:34px;font-size:34px;font-weight:500;line-height:1.42;color:var(--soluk);max-width:880px}
+.maddeler{margin-top:44px;display:grid;gap:18px;max-width:900px}
+.madde{display:flex;gap:22px;align-items:baseline;background:var(--zemin);border-radius:22px;padding:24px 30px}
+.madde b{flex:none;font-size:22px;font-weight:700;color:var(--mavi);width:190px}
+.madde span{font-family:"Anton";font-size:40px;color:var(--lacivert);line-height:1.1}
+.alt{position:absolute;left:88px;right:88px;bottom:72px;display:flex;justify-content:space-between;align-items:flex-end}
+.alt>img{height:132px;}
+.rozet{display:flex;align-items:center;gap:22px;background:#fff;border:3px solid #DCE3F1;border-radius:22px;padding:14px 28px 14px 16px;color:var(--lacivert)}
+.rozet img{height:104px;width:auto;max-width:220px;object-fit:contain}
+.rozet .yer{width:104px;height:104px;border:3px dashed #9AA8C7;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#7E8DB0;text-align:center}
+.rozet small{display:block;font-size:18px;font-weight:600;color:var(--soluk)}
+.rozet b{display:block;font-family:"Anton";font-size:38px;line-height:1.05}
+</style></head><body><div class="frame">{{zemin}}
+<div class="etiket seri">{{seri}}</div>
+<h1 class="anton">{{baslik}}</h1>
+<p class="ozet">{{ozet}}</p>
+<div class="maddeler">{{maddeler}}</div>
+<div class="alt">{{kaynak_rozet}}<img class="hg-logo" src="../logos/bm_kutu_planlama.png"></div>
+</div></body></html>

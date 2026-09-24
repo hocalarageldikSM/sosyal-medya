@@ -1,0 +1,23 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+.frame{background:#fff;padding:80px 88px 0}
+.ust{display:flex;justify-content:space-between;align-items:flex-start}
+.ust img{width:470px}
+.etiket{background:var(--turuncu);margin-top:40px;font-size:40px}
+h1{font-size:{{baslik_boyut}}px;color:var(--lacivert);margin-top:90px;max-width:900px}
+.aciklama{margin-top:36px;font-size:34px;font-weight:500;line-height:1.4;color:var(--soluk);max-width:860px}
+.bilgi{margin-top:56px;display:flex;gap:24px}
+.bilgi div{background:var(--zemin);border-radius:24px;padding:28px 34px;flex:1}
+.bilgi b{display:block;font-size:22px;font-weight:700;color:var(--mavi);margin-bottom:6px}
+.bilgi span{font-family:"Anton";font-size:48px;color:var(--lacivert)}
+.bant{position:absolute;left:0;right:0;bottom:0;background:var(--lacivert);color:#fff;padding:52px 88px 60px;display:flex;align-items:center;gap:40px}
+.bant img{width:118px;flex:none}
+.bant .wa{font-family:"Anton";font-size:54px}
+.bant .adres{font-size:26px;font-weight:500;margin-top:10px;opacity:.9;line-height:1.35}
+.bant small{display:block;font-size:22px;font-weight:600;color:var(--turuncu);margin-bottom:4px}
+</style></head><body><div class="frame">{{zemin}}
+<div class="ust"><img class="hg-logo" src="../logos/bm_kutu_planlama.png"><div class="etiket">{{sube}}</div></div>
+<h1 class="anton">{{baslik}}</h1>
+<p class="aciklama">{{aciklama}}</p>
+<div class="bilgi">{{bilgiler}}</div>
+<div class="bant"><img src="../logos/amblem_beyaz.png"><div><small>Bilgi ve kayıt için WhatsApp</small><div class="wa">{{whatsapp}}</div><div class="adres">{{adres}}</div></div></div>
+</div></body></html>

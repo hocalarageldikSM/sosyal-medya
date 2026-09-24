@@ -5,6 +5,35 @@ from playwright.sync_api import sync_playwright
 KOK = pathlib.Path(__file__).parent
 T = KOK / "templates"
 
+
+# ---- Zemin dokusu: kareli defter + karalama + turuncu tarama (bkz. blueprint 4b) ----
+import math, random
+ZEMIN_TUR = {"duyuru": ("koyu", "#FFFFFF", .13, .55), "karusel_kapak": ("koyu", "#FFFFFF", .13, .55),
+             "karusel_son": ("koyu", "#FFFFFF", .13, .55), "haftalik_ozet": ("koyu", "#FFFFFF", .13, .55),
+             "tuyo": ("koyu", "#FFFFFF", .14, .9), "karusel_adim": ("acik", "#3A589E", .16, .45),
+             "gundem": ("beyaz", "#3A589E", .12, .35), "sube": ("beyaz", "#3A589E", .12, .35)}
+NOTLAR = [("x² + y² = r²", 830, 210, 54, -9), ("√2 ≈ 1,41", 60, 1150, 50, 6), ("π", 960, 560, 110, 12),
+          ("Δ = b² − 4ac", 610, 1010, 50, -5), ("f(x)", 900, 880, 64, 8), ("%", 120, 690, 90, -12),
+          ("H₂O", 880, 1190, 52, -6), ("∑", 470, 1180, 84, 4)]
+
+def zemin(sablon):
+    grid, renk, op, to = ZEMIN_TUR[sablon]
+    r = random.Random(7)
+    yol = lambda pts: "M" + " L".join(f"{x:.0f},{y:.0f}" for x, y in pts)
+    cx, cy, R = 990, 420, 38
+    yildiz = [(cx + (R if i % 2 == 0 else R * .45) * math.cos(-math.pi / 2 + i * math.pi / 5) + r.uniform(-2, 2),
+               cy + (R if i % 2 == 0 else R * .45) * math.sin(-math.pi / 2 + i * math.pi / 5) + r.uniform(-2, 2)) for i in range(11)]
+    daire = [(170 + (70 + r.uniform(-4, 4)) * math.cos(t / 10), 520 + (56 + r.uniform(-4, 4)) * math.sin(t / 10)) for t in range(75)]
+    dalga = [(80 + i * 14, 1265 + 6 * math.sin(i * .9)) for i in range(26)]
+    svg = (f'<svg class="zemin" viewBox="0 0 1080 1350" style="opacity:{op}" fill="none" stroke="{renk}" stroke-width="6" '
+           f'stroke-linecap="round" stroke-linejoin="round"><path d="{yol(yildiz)}"/><path d="{yol(daire)}"/>'
+           '<path d="M700,1120 C760,1070 840,1080 900,1040"/><path d="M872,1030 L902,1040 L885,1068"/>'
+           f'<path d="{yol(dalga)}"/><path d="M60,330 L120,230 L175,335 Z"/></svg>')
+    notlar = "".join(f'<div class="not-yazi" style="left:{x}px;top:{y}px;font-size:{b}px;transform:rotate({a}deg);'
+                     f'color:{renk};opacity:{op}">{t}</div>' for t, x, y, b, a in NOTLAR)
+    return (f'<div class="zemin kareli-{grid}"></div><div class="tarama" style="color:#F19107;opacity:{to};'
+            f'width:360px;height:300px;right:-110px;top:-90px"></div>{svg}<div class="zemin">{notlar}</div>')
+
 def esc(s): return html.escape(str(s))
 
 # Başlık alanı: başlangıç puntosu ve izin verilen maksimum yükseklik (px)
@@ -42,11 +71,12 @@ def doldur(sablon, v):
     if sablon == "karusel_adim":
         alanlar["ilerleme"] = "".join(f'<i class="{"on" if i == v["sira"] else ""}"></i>' for i in range(1, v["toplam"] + 1))
     alanlar["baslik_boyut"] = SIGDIR[sablon][0]
+    alanlar["zemin"] = zemin(sablon)
     if v.get("sira", 1) % 2 == 0:  # karuselde sayfalar arası çeşitlilik
         s = s.replace('<div class="frame">', '<div class="frame ayna">', 1)
     for k, d in alanlar.items():
         if isinstance(d, (str, int)):
-            d = d if k in ("satirlar", "bilgiler", "ilerleme", "kaynak_rozet", "maddeler", "ornek_kutu", "alt_blok", "ogeler", "seri_renk") else esc(d)
+            d = d if k in ("satirlar", "bilgiler", "ilerleme", "kaynak_rozet", "maddeler", "ornek_kutu", "alt_blok", "ogeler", "seri_renk", "zemin") else esc(d)
             s = s.replace("{{" + k + "}}", str(d))
     return s
 

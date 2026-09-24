@@ -1,0 +1,19 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+.frame{background:var(--lacivert);color:#fff;padding:88px 88px 200px}
+.etiket{background:var(--turuncu)}
+h1{font-size:{{baslik_boyut}}px;margin-top:40px}
+.tarih{font-size:28px;font-weight:600;opacity:.8;margin-top:14px}
+.liste{margin-top:44px;display:grid;gap:18px}
+.oge{display:flex;gap:22px;align-items:center;background:rgba(255,255,255,.08);border-radius:22px;padding:22px 28px}
+.oge i{flex:none;font-style:normal;font-family:"Anton";font-size:24px;padding:8px 16px;border-radius:12px;color:#fff;min-width:150px;text-align:center}
+.oge span{font-size:31px;font-weight:600;line-height:1.3}
+.alt{position:absolute;left:88px;right:88px;bottom:72px;display:flex;justify-content:space-between;align-items:flex-end}
+.alt p{font-size:26px;font-weight:600;opacity:.85}
+.alt img{height:132px;}
+</style></head><body><div class="frame">{{zemin}}
+<div class="etiket">Pazar özeti</div>
+<h1 class="anton">{{baslik}}</h1>
+<div class="tarih">{{tarih}}</div>
+<div class="liste">{{ogeler}}</div>
+<div class="alt"><p>Kaydet, hafta boyunca lazım olur</p><img class="hg-logo" src="../logos/bm_kutu_planlama.png"></div>
+</div></body></html>

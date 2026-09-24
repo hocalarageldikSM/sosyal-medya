@@ -1,0 +1,17 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+.frame{background:var(--zemin);padding:96px 88px 200px;display:flex;flex-direction:column;justify-content:center}
+.cizgi{position:absolute;left:0;top:0;bottom:0;width:18px;background:var(--mavi)}
+.no{font-family:"Anton";font-size:340px;line-height:.85;color:var(--turuncu)}
+h2{font-size:{{baslik_boyut}}px;color:var(--lacivert);margin-top:40px;max-width:900px}
+.metin{margin-top:40px;font-size:38px;font-weight:500;line-height:1.45;color:var(--soluk);max-width:860px}
+.ilerleme{position:absolute;left:88px;bottom:92px;display:flex;gap:12px}
+.ilerleme i{width:44px;height:8px;border-radius:4px;background:#C9D3E8}
+.ilerleme i.on{background:var(--mavi)}
+.logo{position:absolute;left:50%;transform:translateX(-50%);bottom:60px;height:130px}
+</style></head><body><div class="frame">{{zemin}}<div class="cizgi"></div>
+<div class="no">{{no}}</div>
+<h2 class="anton">{{baslik}}</h2>
+<p class="metin">{{metin}}</p>
+<div class="ilerleme">{{ilerleme}}</div>
+<img class="logo hg-logo" src="../logos/bm_kutu_planlama.png">
+</div></body></html>
