@@ -46,7 +46,7 @@ jobs:
           if [ -d fonts ]; then cp fonts/* $W/fonts/; else cp *.ttf $W/fonts/; fi
           printf '%s' "$ISLER" > /tmp/isler.json
           (cd $W && python render.py /tmp/isler.json out)
-          mkdir -p "cikti/$PID" && cp $W/out/*.png "cikti/$PID/"
+          mkdir -p "cikti/$PID" && cp $W/out/* "cikti/$PID/"
 
       - name: Kaydet
         env:
