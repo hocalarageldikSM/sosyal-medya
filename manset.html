@@ -1,0 +1,31 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+.frame{background:radial-gradient(120% 90% at 80% 20%,#4a6bb8 0%,var(--mavi) 45%,var(--lacivert) 100%);color:#fff;padding:70px 0 0 70px}
+.kurdele{position:absolute;right:-120px;bottom:-40px;width:900px;height:1100px;z-index:1}
+.ogrenci{position:absolute;right:-10px;bottom:0;height:{{ogr_boy}}px;z-index:2;filter:drop-shadow(0 20px 30px rgba(0,0,0,.35))}
+.ust{position:relative;z-index:3;display:flex;align-items:center;gap:16px}
+.etiket{background:var(--turuncu);font-size:40px;box-shadow:0 8px 0 var(--kiremit)}
+.bloklar{position:relative;z-index:3;margin-top:46px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;max-width:640px}
+.blok{font-family:"Anton";font-size:{{baslik_boyut}}px;line-height:1.02;padding:4px 22px 10px;color:#fff;transform:rotate(-2deg)}
+.blok:nth-child(odd){background:var(--kiremit)}
+.blok:nth-child(even){background:var(--lacivert);margin-left:26px}
+.alt-yazi{position:relative;z-index:3;margin-top:38px;max-width:560px;font-size:32px;font-weight:600;line-height:1.4;text-shadow:0 2px 8px rgba(0,0,0,.25)}
+.ornek{position:relative;z-index:3;margin-top:30px;max-width:560px;background:#fff;color:var(--lacivert);border-radius:22px;padding:20px 26px;transform:rotate(-1deg);box-shadow:0 10px 0 var(--turuncu)}
+.ornek small{display:block;font-size:20px;font-weight:800;color:var(--kiremit)}
+.ornek div{font-family:"Anton";font-size:40px;line-height:1.15}
+.gel{position:absolute;left:70px;bottom:210px;z-index:3;font-family:"Anton";font-size:64px;line-height:1}
+.gel span{display:inline-block;background:#fff;color:var(--kiremit);padding:4px 18px 8px;transform:rotate(-3deg)}
+.gel b{display:inline-block;background:var(--kiremit);color:#fff;padding:4px 18px 8px;transform:rotate(2deg);margin-left:-6px}
+.logo{position:absolute;left:70px;bottom:60px;height:128px;z-index:4}
+.sinav{position:absolute;right:60px;top:64px;z-index:3;font-family:"Anton";font-size:56px;color:var(--lacivert);background:#fff;border-radius:22px;padding:6px 28px 10px;transform:rotate(4deg);box-shadow:0 8px 0 var(--turuncu)}
+</style></head><body><div class="frame">
+<div class="zemin kareli-koyu"></div>
+<svg class="kurdele" viewBox="0 0 900 1100"><path d="M820,-40 C520,140 900,420 560,560 C260,680 520,900 260,1160" fill="none" stroke="#F15725" stroke-width="150" stroke-linecap="round"/></svg>
+<img class="ogrenci" src="../logos/{{ogrenci}}.png">
+<div class="sinav">{{sinav}}</div>
+<div class="ust"><div class="etiket">{{etiket}}</div></div>
+<div class="bloklar">{{bloklar}}</div>
+<p class="alt-yazi">{{aciklama}}</p>
+{{ornek_kutu}}
+<div class="gel"><span>sen de</span><b>#GEL.</b></div>
+<img class="logo hg-logo" src="../logos/bm_kutu_planlama.png">
+</div></body></html>
