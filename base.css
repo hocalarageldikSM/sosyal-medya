@@ -26,3 +26,6 @@ body{font-family:"Montserrat",sans-serif;color:var(--metin);-webkit-font-smoothi
 
 /* LOGO: mevcut tasarımlardaki gibi etiket (sticker): düz, beyaz dış kontur, yumuşak gölge */
 .hg-logo{filter:drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 16px 18px rgba(0,0,0,.28))}
+
+/* yeni sablonlar: mutlak konumlu katmanlar */
+.frame>.kurdele,.frame>.ogrenci,.frame>.sinav,.frame>.gel{position:absolute}
