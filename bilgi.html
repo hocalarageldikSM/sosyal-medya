@@ -1,0 +1,32 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+.frame{background:linear-gradient(160deg,var(--mavi) 0%,var(--lacivert) 70%);color:#fff;padding:80px 70px 0}
+.kurdele{position:absolute;left:-200px;bottom:-160px;width:1400px;height:700px;z-index:0}
+.frame>.icerik{position:relative;z-index:2}
+.ust{display:flex;align-items:center;justify-content:space-between}
+.etiket{background:var(--turuncu);font-size:40px;box-shadow:0 8px 0 var(--kiremit)}
+.hedef{font-family:"Anton";font-size:40px;color:var(--lacivert);background:#fff;border-radius:18px;padding:4px 22px 8px;transform:rotate(3deg)}
+h1{font-size:{{baslik_boyut}}px;margin-top:50px;max-width:940px}
+.firca{width:360px;height:18px;margin-top:14px;background:var(--turuncu);border-radius:10px;transform:rotate(-1.5deg)}
+.ozet{margin-top:26px;font-size:32px;font-weight:600;line-height:1.4;max-width:900px;opacity:.95}
+.maddeler{margin-top:40px;display:grid;gap:16px}
+.madde{display:flex;align-items:center;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 8px 0 rgba(0,0,0,.18)}
+.madde b{flex:none;width:250px;align-self:stretch;display:flex;align-items:center;padding:18px 22px;background:var(--turuncu);font-family:"Anton";font-weight:400;font-size:32px;line-height:1.05}
+.madde span{padding:18px 24px;font-family:"Anton";font-size:40px;color:var(--lacivert);line-height:1.1}
+.alt{position:absolute;left:70px;right:70px;bottom:60px;display:flex;justify-content:space-between;align-items:flex-end;z-index:3}
+.alt>img{height:128px}
+.rozet{display:flex;align-items:center;gap:18px;background:#fff;border-radius:22px;padding:14px 26px 14px 16px;color:var(--lacivert)}
+.rozet img{height:96px;width:auto;max-width:200px;object-fit:contain}
+.rozet small{display:block;font-size:18px;font-weight:600;color:var(--soluk)}
+.rozet b{display:block;font-family:"Anton";font-size:36px;line-height:1.05}
+</style></head><body><div class="frame">
+<div class="zemin kareli-koyu"></div>
+<svg class="kurdele" viewBox="0 0 1400 700"><path d="M-40,520 C260,300 520,700 820,470 C1060,290 1180,380 1460,160" fill="none" stroke="#F15725" stroke-width="130" stroke-linecap="round"/></svg>
+<div class="icerik">
+<div class="ust"><div class="etiket">{{seri}}</div><div class="hedef">{{hedef}}</div></div>
+<h1 class="anton">{{baslik}}</h1>
+<div class="firca"></div>
+<p class="ozet">{{ozet}}</p>
+<div class="maddeler">{{maddeler}}</div>
+</div>
+<div class="alt">{{kaynak_rozet}}<img class="hg-logo" src="../logos/bm_kutu_planlama.png"></div>
+</div></body></html>
