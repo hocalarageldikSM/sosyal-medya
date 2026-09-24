@@ -96,7 +96,9 @@ def uret(isler, cikti):
             tasma = pg.evaluate("""()=>[...document.querySelectorAll('.frame *')].filter(e=>{const r=e.getBoundingClientRect();
               return r.bottom>1350.5||r.right>1080.5}).filter(e=>!e.classList.contains('amblem')&&!e.classList.contains('tarama')).map(e=>e.className||e.tagName)""")
             if tasma: print("UYARI taşma:", is_["dosya"], tasma)
-            pg.screenshot(path=str(cikti / is_["dosya"]))
+            dosya = is_["dosya"]
+            jpg = dosya.lower().endswith((".jpg", ".jpeg"))  # Instagram API yalnizca JPEG kabul eder
+            pg.screenshot(path=str(cikti / dosya), **({"type": "jpeg", "quality": 92} if jpg else {}))
             print("ok", is_["dosya"])
         b.close()
     (T / "_gecici.html").unlink(missing_ok=True)
