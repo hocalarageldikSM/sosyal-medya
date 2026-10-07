@@ -8,7 +8,7 @@ T = KOK / "templates"
 
 # ---- Zemin dokusu: kareli defter + karalama + turuncu tarama (bkz. blueprint 4b) ----
 import math, random
-ZEMIN_TUR = {"taziye": ("koyu", "#FFFFFF", 0, 0), "manset": ("koyu", "#FFFFFF", .10, 0), "bilgi": ("koyu", "#FFFFFF", .10, 0), "duyuru": ("koyu", "#FFFFFF", .13, .55), "karusel_kapak": ("koyu", "#FFFFFF", .13, .55),
+ZEMIN_TUR = {"taziye_hikaye": ("koyu", "#FFFFFF", 0, 0), "taziye": ("koyu", "#FFFFFF", 0, 0), "manset": ("koyu", "#FFFFFF", .10, 0), "bilgi": ("koyu", "#FFFFFF", .10, 0), "duyuru": ("koyu", "#FFFFFF", .13, .55), "karusel_kapak": ("koyu", "#FFFFFF", .13, .55),
              "karusel_son": ("koyu", "#FFFFFF", .13, .55), "haftalik_ozet": ("koyu", "#FFFFFF", .13, .55),
              "tuyo": ("koyu", "#FFFFFF", .14, .9), "karusel_adim": ("acik", "#3A589E", .16, .45),
              "gundem": ("beyaz", "#3A589E", .12, .35), "sube": ("beyaz", "#3A589E", .12, .35)}
@@ -37,7 +37,8 @@ def zemin(sablon):
 def esc(s): return html.escape(str(s))
 
 # Başlık alanı: başlangıç puntosu ve izin verilen maksimum yükseklik (px)
-SIGDIR = {"taziye": (92, 300), "manset": (96, 470), "bilgi": (92, 250), "gundem": (104, 330), "tuyo": (84, 260), "haftalik_ozet": (96, 220), "duyuru": (118, 380), "sube": (112, 260), "karusel_kapak": (150, 560),
+BOY = {"taziye_hikaye": 1920}  # varsayilan 1350 (post); hikaye 1920
+SIGDIR = {"taziye_hikaye": (110, 380), "taziye": (92, 300), "manset": (96, 470), "bilgi": (92, 250), "gundem": (104, 330), "tuyo": (84, 260), "haftalik_ozet": (96, 220), "duyuru": (118, 380), "sube": (112, 260), "karusel_kapak": (150, 560),
           "karusel_adim": (88, 300), "karusel_son": (104, 440)}
 
 def doldur(sablon, v):
@@ -109,6 +110,7 @@ def uret(isler, cikti):
     with sync_playwright() as p:
         b = p.chromium.launch(); pg = b.new_page(viewport={"width": 1080, "height": 1350})
         for is_ in isler:
+            boy = BOY.get(is_["sablon"], 1350); pg.set_viewport_size({"width": 1080, "height": boy})
             gecici = T / "_gecici.html"
             gecici.write_text(doldur(is_["sablon"], is_["veri"]), encoding="utf-8")
             pg.goto(gecici.as_uri()); pg.evaluate("document.fonts.ready")
@@ -117,8 +119,8 @@ def uret(isler, cikti):
             pg.evaluate("""(maks)=>{const h=document.querySelector('h1,h2');if(!h)return;
               let f=parseFloat(getComputedStyle(h).fontSize);
               while(h.getBoundingClientRect().height>maks && f>40){f-=4;h.style.fontSize=f+'px';}}""", maks)
-            tasma = pg.evaluate("""()=>[...document.querySelectorAll('.frame *')].filter(e=>{const r=e.getBoundingClientRect();
-              return r.bottom>1350.5||r.right>1080.5}).filter(e=>!e.classList.contains('amblem')&&!e.classList.contains('tarama')).map(e=>e.className||e.tagName)""")
+            tasma = pg.evaluate("""(boy)=>[...document.querySelectorAll('.frame *')].filter(e=>{const r=e.getBoundingClientRect();
+              return r.bottom>boy+.5||r.right>1080.5}).filter(e=>!e.classList.contains('amblem')&&!e.classList.contains('tarama')).map(e=>e.className||e.tagName)""", boy)
             if tasma: print("UYARI taşma:", is_["dosya"], tasma)
             dosya = is_["dosya"]
             jpg = dosya.lower().endswith((".jpg", ".jpeg"))  # Instagram API yalnizca JPEG kabul eder
