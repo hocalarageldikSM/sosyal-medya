@@ -1,0 +1,24 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+/* Taziye / milli yas sablonu: sade, sus yok, turuncu yok */
+.frame{background:#101826;color:#fff;text-align:center}
+.icerik{position:absolute!important;left:110px;right:110px;top:130px;display:flex;flex-direction:column;align-items:center}
+.kurdele-svg{width:150px;height:200px}
+.ust{margin-top:56px;font-size:30px;font-weight:700;letter-spacing:8px;text-transform:uppercase;color:rgba(255,255,255,.72)}
+.cizgi-ince{width:120px;height:2px;background:rgba(255,255,255,.35);margin-top:36px}
+h1{font-size:{{baslik_boyut}}px;margin-top:40px;max-width:860px;font-weight:400}
+.metin{margin-top:42px;font-size:35px;font-weight:500;line-height:1.45;max-width:820px;color:rgba(255,255,255,.88)}
+.logo-alt{position:absolute!important;left:50%;transform:translateX(-50%);bottom:60px;height:130px}
+</style></head><body><div class="frame">
+<div class="icerik">
+<svg class="kurdele-svg" viewBox="0 0 150 200" fill="#000" stroke="rgba(255,255,255,.6)" stroke-width="3" stroke-linejoin="round">
+  <path d="M75 92 C48 62 40 36 52 18 C62 4 88 4 98 18 C110 36 102 62 75 92 Z M75 70 C62 54 59 40 64 31 C68 24 82 24 86 31 C91 40 88 54 75 70 Z" fill-rule="evenodd"/>
+  <path d="M68 86 L28 192 L52 180 L66 196 L88 104 Z"/>
+  <path d="M82 86 L122 192 L98 180 L84 196 L62 104 Z"/>
+</svg>
+<div class="ust">{{ust}}</div>
+<div class="cizgi-ince"></div>
+<h1 class="anton">{{baslik}}</h1>
+<p class="metin">{{metin}}</p>
+</div>
+<img class="logo-alt" src="../logos/bm_kutu_planlama.png">
+</div></body></html>
