@@ -8,7 +8,7 @@ T = KOK / "templates"
 
 # ---- Zemin dokusu: kareli defter + karalama + turuncu tarama (bkz. blueprint 4b) ----
 import math, random
-ZEMIN_TUR = {"manset": ("koyu", "#FFFFFF", .10, 0), "bilgi": ("koyu", "#FFFFFF", .10, 0), "duyuru": ("koyu", "#FFFFFF", .13, .55), "karusel_kapak": ("koyu", "#FFFFFF", .13, .55),
+ZEMIN_TUR = {"taziye": ("koyu", "#FFFFFF", 0, 0), "manset": ("koyu", "#FFFFFF", .10, 0), "bilgi": ("koyu", "#FFFFFF", .10, 0), "duyuru": ("koyu", "#FFFFFF", .13, .55), "karusel_kapak": ("koyu", "#FFFFFF", .13, .55),
              "karusel_son": ("koyu", "#FFFFFF", .13, .55), "haftalik_ozet": ("koyu", "#FFFFFF", .13, .55),
              "tuyo": ("koyu", "#FFFFFF", .14, .9), "karusel_adim": ("acik", "#3A589E", .16, .45),
              "gundem": ("beyaz", "#3A589E", .12, .35), "sube": ("beyaz", "#3A589E", .12, .35)}
@@ -37,7 +37,7 @@ def zemin(sablon):
 def esc(s): return html.escape(str(s))
 
 # Başlık alanı: başlangıç puntosu ve izin verilen maksimum yükseklik (px)
-SIGDIR = {"manset": (96, 470), "bilgi": (92, 250), "gundem": (104, 330), "tuyo": (84, 260), "haftalik_ozet": (96, 220), "duyuru": (118, 380), "sube": (112, 260), "karusel_kapak": (150, 560),
+SIGDIR = {"taziye": (92, 300), "manset": (96, 470), "bilgi": (92, 250), "gundem": (104, 330), "tuyo": (84, 260), "haftalik_ozet": (96, 220), "duyuru": (118, 380), "sube": (112, 260), "karusel_kapak": (150, 560),
           "karusel_adim": (88, 300), "karusel_son": (104, 440)}
 
 def doldur(sablon, v):
