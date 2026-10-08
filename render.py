@@ -114,6 +114,9 @@ def uret(isler, cikti):
             gecici = T / "_gecici.html"
             gecici.write_text(doldur(is_["sablon"], is_["veri"]), encoding="utf-8")
             pg.goto(gecici.as_uri()); pg.evaluate("document.fonts.ready")
+            kirik = pg.evaluate("()=>[...document.images].filter(i=>!(i.complete&&i.naturalWidth>0)).map(i=>i.src.slice(0,80))")
+            if kirik and is_["sablon"] == "merkez_hikaye":
+                raise SystemExit("Merkez görseli yüklenemedi: " + str(kirik))
             # başlığı alana sığana kadar küçült (taşma olmasın)
             maks = SIGDIR[is_["sablon"]][1]
             pg.evaluate("""(maks)=>{const h=document.querySelector('h1,h2');if(!h)return;
