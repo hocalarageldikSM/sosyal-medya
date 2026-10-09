@@ -1,6 +1,6 @@
 """HG sosyal medya şablon motoru: JSON veri -> PNG (1080x1350).
 Kullanım: python render.py ornek_veri.json cikti_klasoru"""
-import json, sys, html, pathlib
+import json, sys, html, pathlib, base64
 from playwright.sync_api import sync_playwright
 KOK = pathlib.Path(__file__).parent
 T = KOK / "templates"
@@ -8,7 +8,7 @@ T = KOK / "templates"
 
 # ---- Zemin dokusu: kareli defter + karalama + turuncu tarama (bkz. blueprint 4b) ----
 import math, random
-ZEMIN_TUR = {"merkez_hikaye": ("koyu", "#FFFFFF", 0, 0), "taziye_hikaye": ("koyu", "#FFFFFF", 0, 0), "taziye": ("koyu", "#FFFFFF", 0, 0), "manset": ("koyu", "#FFFFFF", .10, 0), "bilgi": ("koyu", "#FFFFFF", .10, 0), "duyuru": ("koyu", "#FFFFFF", .13, .55), "karusel_kapak": ("koyu", "#FFFFFF", .13, .55),
+ZEMIN_TUR = {"hikaye": ("koyu", "#FFFFFF", 0, 0), "merkez_hikaye": ("koyu", "#FFFFFF", 0, 0), "taziye_hikaye": ("koyu", "#FFFFFF", 0, 0), "taziye": ("koyu", "#FFFFFF", 0, 0), "manset": ("koyu", "#FFFFFF", .10, 0), "bilgi": ("koyu", "#FFFFFF", .10, 0), "duyuru": ("koyu", "#FFFFFF", .13, .55), "karusel_kapak": ("koyu", "#FFFFFF", .13, .55),
              "karusel_son": ("koyu", "#FFFFFF", .13, .55), "haftalik_ozet": ("koyu", "#FFFFFF", .13, .55),
              "tuyo": ("koyu", "#FFFFFF", .14, .9), "karusel_adim": ("acik", "#3A589E", .16, .45),
              "gundem": ("beyaz", "#3A589E", .12, .35), "sube": ("beyaz", "#3A589E", .12, .35)}
@@ -37,8 +37,8 @@ def zemin(sablon):
 def esc(s): return html.escape(str(s))
 
 # Başlık alanı: başlangıç puntosu ve izin verilen maksimum yükseklik (px)
-BOY = {"taziye_hikaye": 1920, "merkez_hikaye": 1920}  # varsayilan 1350 (post); hikaye 1920
-SIGDIR = {"merkez_hikaye": (60, 200), "taziye_hikaye": (110, 380), "taziye": (92, 300), "manset": (96, 470), "bilgi": (92, 250), "gundem": (104, 330), "tuyo": (84, 260), "haftalik_ozet": (96, 220), "duyuru": (118, 380), "sube": (112, 260), "karusel_kapak": (150, 560),
+BOY = {"hikaye": 1920, "taziye_hikaye": 1920, "merkez_hikaye": 1920}  # varsayilan 1350 (post); hikaye 1920
+SIGDIR = {"hikaye": (60, 9999), "merkez_hikaye": (60, 200), "taziye_hikaye": (110, 380), "taziye": (92, 300), "manset": (96, 470), "bilgi": (92, 250), "gundem": (104, 330), "tuyo": (84, 260), "haftalik_ozet": (96, 220), "duyuru": (118, 380), "sube": (112, 260), "karusel_kapak": (150, 560),
           "karusel_adim": (88, 300), "karusel_son": (104, 440)}
 
 def doldur(sablon, v):
@@ -105,26 +105,45 @@ def doldur(sablon, v):
             s = s.replace("{{" + k + "}}", str(d))
     return s
 
+def ciz(pg, sablon, veri, etiket):
+    """Şablonu doldurur, sayfaya yükler, başlığı sığdırır, taşmayı raporlar."""
+    boy = BOY.get(sablon, 1350); pg.set_viewport_size({"width": 1080, "height": boy})
+    gecici = T / "_gecici.html"
+    gecici.write_text(doldur(sablon, veri), encoding="utf-8")
+    pg.goto(gecici.as_uri()); pg.evaluate("document.fonts.ready")
+    kirik = pg.evaluate("()=>[...document.images].filter(i=>!(i.complete&&i.naturalWidth>0)).map(i=>i.src.slice(0,80))")
+    if kirik and sablon in ("merkez_hikaye", "hikaye"):
+        raise SystemExit("Hikaye görseli yüklenemedi: " + str(kirik))
+    # başlığı alana sığana kadar küçült (taşma olmasın)
+    maks = SIGDIR[sablon][1]
+    pg.evaluate("""(maks)=>{const h=document.querySelector('h1,h2');if(!h)return;
+      let f=parseFloat(getComputedStyle(h).fontSize);
+      while(h.getBoundingClientRect().height>maks && f>40){f-=4;h.style.fontSize=f+'px';}}""", maks)
+    tasma = pg.evaluate("""(boy)=>[...document.querySelectorAll('.frame *')].filter(e=>{const r=e.getBoundingClientRect();
+      return r.bottom>boy+.5||r.right>1080.5}).filter(e=>!e.classList.contains('amblem')&&!e.classList.contains('tarama')&&!e.classList.contains('bulanik')).map(e=>e.className||e.tagName)""", boy)
+    if tasma: print("UYARI taşma:", etiket, tasma)
+
+def hikaye_verisi(pg, veri):
+    """'hikaye': yeni tasarım yok; mevcut post görselini 1080x1920'ye uyarlar.
+    veri.gorsel (URL/yol) verilirse o kullanılır; yoksa veri.kaynak_sablon + aynı post değişkenleriyle
+    post 1080x1350 olarak çizilir ve hikâyeye gömülür."""
+    if veri.get("gorsel"):
+        return {"gorsel": veri["gorsel"]}
+    kaynak = veri.get("kaynak_sablon")
+    if not kaynak or kaynak not in SIGDIR or kaynak == "hikaye" or BOY.get(kaynak, 1350) != 1350:
+        raise SystemExit("hikaye: veri.gorsel ya da geçerli bir post şablonu adı (veri.kaynak_sablon) gerekli")
+    post = {k: d for k, d in veri.items() if k != "kaynak_sablon"}
+    ciz(pg, kaynak, post, "hikaye<-" + kaynak)
+    png = pg.screenshot()
+    return {"gorsel": "data:image/png;base64," + base64.b64encode(png).decode()}
+
 def uret(isler, cikti):
     cikti = pathlib.Path(cikti); cikti.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as p:
         b = p.chromium.launch(); pg = b.new_page(viewport={"width": 1080, "height": 1350})
         for is_ in isler:
-            boy = BOY.get(is_["sablon"], 1350); pg.set_viewport_size({"width": 1080, "height": boy})
-            gecici = T / "_gecici.html"
-            gecici.write_text(doldur(is_["sablon"], is_["veri"]), encoding="utf-8")
-            pg.goto(gecici.as_uri()); pg.evaluate("document.fonts.ready")
-            kirik = pg.evaluate("()=>[...document.images].filter(i=>!(i.complete&&i.naturalWidth>0)).map(i=>i.src.slice(0,80))")
-            if kirik and is_["sablon"] == "merkez_hikaye":
-                raise SystemExit("Merkez görseli yüklenemedi: " + str(kirik))
-            # başlığı alana sığana kadar küçült (taşma olmasın)
-            maks = SIGDIR[is_["sablon"]][1]
-            pg.evaluate("""(maks)=>{const h=document.querySelector('h1,h2');if(!h)return;
-              let f=parseFloat(getComputedStyle(h).fontSize);
-              while(h.getBoundingClientRect().height>maks && f>40){f-=4;h.style.fontSize=f+'px';}}""", maks)
-            tasma = pg.evaluate("""(boy)=>[...document.querySelectorAll('.frame *')].filter(e=>{const r=e.getBoundingClientRect();
-              return r.bottom>boy+.5||r.right>1080.5}).filter(e=>!e.classList.contains('amblem')&&!e.classList.contains('tarama')).map(e=>e.className||e.tagName)""", boy)
-            if tasma: print("UYARI taşma:", is_["dosya"], tasma)
+            veri = hikaye_verisi(pg, is_["veri"]) if is_["sablon"] == "hikaye" else is_["veri"]
+            ciz(pg, is_["sablon"], veri, is_["dosya"])
             dosya = is_["dosya"]
             jpg = dosya.lower().endswith((".jpg", ".jpeg"))  # Instagram API yalnizca JPEG kabul eder
             pg.screenshot(path=str(cikti / dosya), **({"type": "jpeg", "quality": 92} if jpg else {}))

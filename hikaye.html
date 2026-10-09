@@ -1,0 +1,16 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+/* HIKAYE UYARLAMA (1080x1920): mevcut post görselini (1080x1350) yeni tasarım üretmeden hikâye formatına taşır.
+   Arka plan: aynı görselin bulanık hali + lacivert örtü + kareli desen. Üst/alt >=250px Instagram arayüzü için boş. */
+html,body{height:1920px!important}
+.frame{height:1920px!important;background:var(--lacivert)}
+.frame>.bulanik,.frame>.ortu,.frame>.desen,.frame>.kart{position:absolute}
+.bulanik{inset:-80px;background:url("{{gorsel}}") center/cover no-repeat;filter:blur(48px) saturate(1.15)}
+.ortu{inset:0;background:linear-gradient(180deg,rgba(24,64,119,.78),rgba(24,64,119,.55) 50%,rgba(24,64,119,.82))}
+.desen{inset:0;background-image:linear-gradient(rgba(255,255,255,.06) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.06) 2px,transparent 2px);background-size:54px 54px}
+/* 1000x1250 kart (post oranı 4:5), dikeyde ortada: üst 335px, alt 335px boşluk */
+.kart{left:40px;top:335px;width:1000px;height:1250px;border-radius:28px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.45);background:#fff}
+.kart img{width:100%;height:100%;object-fit:cover;display:block}
+</style></head><body><div class="frame hikaye-uyarla">
+<div class="bulanik"></div><div class="ortu"></div><div class="desen"></div>
+<div class="kart"><img src="{{gorsel}}"></div>
+</div></body></html>
