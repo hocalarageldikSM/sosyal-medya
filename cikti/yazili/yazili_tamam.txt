@@ -1,1 +1,1 @@
-9_edb,10_edb,11_edb,12_edb
+9_tar,10_cog,11_cog,12_cog,10_biy,10_kim,11_mat,11_fiz,12_fiz,12_biy,12_kim
