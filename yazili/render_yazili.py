@@ -131,7 +131,9 @@ def sayfalar(d):
     return out
 
 def uret(kimlik, cikti):
-    d = json.loads((Y / "veri" / f"{kimlik}.json").read_text(encoding="utf-8"))
+    tek = Y / "veri" / f"{kimlik}.json"
+    d = (json.loads(tek.read_text(encoding="utf-8")) if tek.exists()
+         else json.loads((Y / "veri" / f"{kimlik.split('_')[0]}.json").read_text(encoding="utf-8"))[kimlik])
     cikti = pathlib.Path(cikti); cikti.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as p:
         b = p.chromium.launch(); pg = b.new_page(viewport={"width": 1080, "height": 1350})
