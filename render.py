@@ -154,6 +154,10 @@ def uret(isler, cikti):
 if __name__ == "__main__":
     _girdi = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
     if isinstance(_girdi, dict) and "yazili" in _girdi:  # yazılı karuselleri ayrı motorla üretilir
-        import subprocess
-        sys.exit(subprocess.call([sys.executable, str(KOK / "yazili" / "render_yazili.py"), _girdi["yazili"], sys.argv[2]]))
+        import subprocess, os
+        _depo = pathlib.Path(os.environ.get("GITHUB_WORKSPACE", str(KOK)))
+        _kod = subprocess.call([sys.executable, str(_depo / "yazili" / "render_yazili.py"), _girdi["yazili"], str(_depo / "cikti" / "yazili")])
+        pathlib.Path(sys.argv[2]).mkdir(parents=True, exist_ok=True)
+        (pathlib.Path(sys.argv[2]) / "yazili_tamam.txt").write_text(_girdi["yazili"], encoding="utf-8")
+        sys.exit(_kod)
     uret(_girdi, sys.argv[2])
