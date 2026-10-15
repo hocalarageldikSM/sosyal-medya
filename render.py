@@ -152,4 +152,8 @@ def uret(isler, cikti):
     (T / "_gecici.html").unlink(missing_ok=True)
 
 if __name__ == "__main__":
-    uret(json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")), sys.argv[2])
+    _girdi = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+    if isinstance(_girdi, dict) and "yazili" in _girdi:  # yazılı karuselleri ayrı motorla üretilir
+        import subprocess
+        sys.exit(subprocess.call([sys.executable, str(KOK / "yazili" / "render_yazili.py"), _girdi["yazili"], sys.argv[2]]))
+    uret(_girdi, sys.argv[2])
