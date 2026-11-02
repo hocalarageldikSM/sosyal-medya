@@ -11,7 +11,8 @@ import math, random
 ZEMIN_TUR = {"hikaye": ("koyu", "#FFFFFF", 0, 0), "merkez_hikaye": ("koyu", "#FFFFFF", 0, 0), "taziye_hikaye": ("koyu", "#FFFFFF", 0, 0), "taziye": ("koyu", "#FFFFFF", 0, 0), "manset": ("koyu", "#FFFFFF", .10, 0), "bilgi": ("koyu", "#FFFFFF", .10, 0), "duyuru": ("koyu", "#FFFFFF", .13, .55), "karusel_kapak": ("koyu", "#FFFFFF", .13, .55),
              "karusel_son": ("koyu", "#FFFFFF", .13, .55), "haftalik_ozet": ("koyu", "#FFFFFF", .13, .55),
              "tuyo": ("koyu", "#FFFFFF", .14, .9), "karusel_adim": ("acik", "#3A589E", .16, .45),
-             "gundem": ("beyaz", "#3A589E", .12, .35), "sube": ("beyaz", "#3A589E", .12, .35)}
+             "gundem": ("beyaz", "#3A589E", .12, .35), "sube": ("beyaz", "#3A589E", .12, .35),
+             "radar_kapak": ("koyu", "#FFFFFF", 0, 0), "radar_haber": ("koyu", "#FFFFFF", 0, 0), "radar_son": ("koyu", "#FFFFFF", 0, 0)}
 NOTLAR = [("x² + y² = r²", 830, 210, 54, -9), ("√2 ≈ 1,41", 60, 1150, 50, 6), ("π", 960, 560, 110, 12),
           ("Δ = b² − 4ac", 610, 1010, 50, -5), ("f(x)", 900, 880, 64, 8), ("%", 120, 690, 90, -12),
           ("H₂O", 880, 1190, 52, -6), ("∑", 470, 1180, 84, 4)]
@@ -39,7 +40,8 @@ def esc(s): return html.escape(str(s))
 # Başlık alanı: başlangıç puntosu ve izin verilen maksimum yükseklik (px)
 BOY = {"hikaye": 1920, "taziye_hikaye": 1920, "merkez_hikaye": 1920}  # varsayilan 1350 (post); hikaye 1920
 SIGDIR = {"hikaye": (60, 9999), "merkez_hikaye": (60, 200), "taziye_hikaye": (110, 380), "taziye": (92, 300), "manset": (96, 470), "bilgi": (92, 250), "gundem": (104, 330), "tuyo": (84, 260), "haftalik_ozet": (96, 220), "duyuru": (118, 380), "sube": (112, 260), "karusel_kapak": (150, 560),
-          "karusel_adim": (88, 300), "karusel_son": (104, 440)}
+          "karusel_adim": (88, 300), "karusel_son": (104, 440),
+          "radar_kapak": (92, 200), "radar_haber": (88, 190), "radar_son": (92, 250)}
 
 def doldur(sablon, v):
     s = (T / f"{sablon}.html").read_text(encoding="utf-8")
@@ -95,13 +97,16 @@ def doldur(sablon, v):
         alanlar["bilgiler"] = "".join(f'<div><b>{esc(k)}</b><span>{esc(d)}</span></div>' for k, d in v["bilgiler"])
     if sablon == "karusel_adim":
         alanlar["ilerleme"] = "".join(f'<i class="{"on" if i == v["sira"] else ""}"></i>' for i in range(1, v["toplam"] + 1))
+    if sablon in ("radar_kapak", "radar_son"):  # Şube Radarı: şubelerin kendi paylaşım fotoğrafları
+        alanlar["fotolar"] = "".join(f'<img src="{esc(u)}">' for u in v.get("fotolar", [])[:4])
+        alanlar["blipler"] = "".join(f'<span><i></i>{esc(x)}</span>' for x in v.get("subeler", []))
     alanlar["baslik_boyut"] = SIGDIR[sablon][0]
     alanlar["zemin"] = zemin(sablon)
     if v.get("sira", 1) % 2 == 0:  # karuselde sayfalar arası çeşitlilik
         s = s.replace('<div class="frame">', '<div class="frame ayna">', 1)
     for k, d in alanlar.items():
         if isinstance(d, (str, int)):
-            d = d if k in ("satirlar", "bilgiler", "ilerleme", "kaynak_rozet", "maddeler", "ornek_kutu", "alt_blok", "ogeler", "seri_renk", "zemin", "bloklar", "ogr_boy") else esc(d)
+            d = d if k in ("satirlar", "bilgiler", "ilerleme", "kaynak_rozet", "maddeler", "ornek_kutu", "alt_blok", "ogeler", "seri_renk", "zemin", "bloklar", "ogr_boy", "fotolar", "blipler") else esc(d)
             s = s.replace("{{" + k + "}}", str(d))
     return s
 
@@ -112,7 +117,7 @@ def ciz(pg, sablon, veri, etiket):
     gecici.write_text(doldur(sablon, veri), encoding="utf-8")
     pg.goto(gecici.as_uri()); pg.evaluate("document.fonts.ready")
     kirik = pg.evaluate("()=>[...document.images].filter(i=>!(i.complete&&i.naturalWidth>0)).map(i=>i.src.slice(0,80))")
-    if kirik and sablon in ("merkez_hikaye", "hikaye"):
+    if kirik and sablon in ("merkez_hikaye", "hikaye", "radar_kapak", "radar_haber", "radar_son"):
         raise SystemExit("Hikaye görseli yüklenemedi: " + str(kirik))
     # başlığı alana sığana kadar küçült (taşma olmasın)
     maks = SIGDIR[sablon][1]
