@@ -41,7 +41,7 @@ def esc(s): return html.escape(str(s))
 BOY = {"hikaye": 1920, "taziye_hikaye": 1920, "merkez_hikaye": 1920}  # varsayilan 1350 (post); hikaye 1920
 SIGDIR = {"hikaye": (60, 9999), "merkez_hikaye": (60, 200), "taziye_hikaye": (110, 380), "taziye": (92, 300), "manset": (96, 470), "bilgi": (92, 250), "gundem": (104, 330), "tuyo": (84, 260), "haftalik_ozet": (96, 220), "duyuru": (118, 380), "sube": (112, 260), "karusel_kapak": (150, 560),
           "karusel_adim": (88, 300), "karusel_son": (104, 440),
-          "radar_kapak": (92, 200), "radar_haber": (88, 190), "radar_son": (92, 250)}
+          "radar_kapak": (84, 260), "radar_haber": (84, 240), "radar_son": (84, 260)}
 
 def doldur(sablon, v):
     s = (T / f"{sablon}.html").read_text(encoding="utf-8")
@@ -100,6 +100,8 @@ def doldur(sablon, v):
     if sablon in ("radar_kapak", "radar_son"):  # Şube Radarı: şubelerin kendi paylaşım fotoğrafları
         alanlar["fotolar"] = "".join(f'<img src="{esc(u)}">' for u in v.get("fotolar", [])[:4])
         alanlar["blipler"] = "".join(f'<span><i></i>{esc(x)}</span>' for x in v.get("subeler", []))
+    if sablon == "radar_haber":  # foto odağı/yakınlaştırma: fotoğrafın en ilginç bölümü (yoksa varsayılan)
+        alanlar["odak"] = v.get("odak") or "center 35%"; alanlar["yakin"] = str(v.get("yakin") or 1)
     alanlar["baslik_boyut"] = SIGDIR[sablon][0]
     alanlar["zemin"] = zemin(sablon)
     if v.get("sira", 1) % 2 == 0:  # karuselde sayfalar arası çeşitlilik
