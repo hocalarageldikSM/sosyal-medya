@@ -1,0 +1,43 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+/* Taziye BAYRAK HIKAYE sablonu (1080x1920): ulusal yas / sehit haberleri icin.
+   Kumas dokulu koyu kirmizi bayrak zemini, soluk ay-yildiz, ortada beyaz golgeli metin, altta kapanis + logo.
+   Ust/alt ~260px Instagram arayuzu icin bos. Alanlar: metin (paragraflar \n\n ile ayrilir), kapanis */
+html,body{height:1920px!important}
+.frame{height:1920px!important;background:#5c0c12;color:#fff;text-align:center}
+.kumas{position:absolute!important;inset:0;width:1080px;height:1920px}
+.ayyildiz{position:absolute!important;inset:0;width:1080px;height:1920px}
+.golge{position:absolute!important;inset:0;background:
+  radial-gradient(ellipse 80% 60% at 50% 45%,rgba(0,0,0,0) 40%,rgba(0,0,0,.45) 100%),
+  linear-gradient(180deg,rgba(0,0,0,.25) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 70%,rgba(0,0,0,.55) 100%)}
+.icerik{position:absolute!important;left:110px;right:110px;top:300px;height:1050px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+h1{font-family:"Montserrat",sans-serif;font-weight:700;font-size:{{baslik_boyut}}px;line-height:1.32;white-space:pre-line;max-width:800px;
+   text-shadow:0 3px 0 rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.55)}
+.kapanis{position:absolute!important;left:60px;right:60px;top:1395px;font-family:"Montserrat",sans-serif;font-weight:600;font-size:60px;
+   text-shadow:0 3px 0 rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.55)}
+.logo-alt{position:absolute!important;left:50%;transform:translateX(-50%);bottom:235px;height:150px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
+</style></head><body><div class="frame">
+<svg class="kumas" viewBox="0 0 1080 1920" preserveAspectRatio="none">
+  <filter id="kat" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.006 0.0008" numOctaves="3" seed="4"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.6 0 0 0 -.55"/>
+  </filter>
+  <filter id="lif" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="2"/>
+    <feColorMatrix type="saturate" values="0"/>
+  </filter>
+  <rect width="1080" height="1920" fill="#7a1018"/>
+  <rect width="1080" height="1920" filter="url(#kat)" opacity=".85"/>
+  <rect width="1080" height="1920" filter="url(#lif)" opacity=".06"/>
+</svg>
+<svg class="ayyildiz" viewBox="0 0 1080 1920">
+  <defs><mask id="hilal"><rect width="1080" height="1920" fill="#fff"/><circle cx="640" cy="710" r="356" fill="#000"/></mask></defs>
+  <g fill="#c9c4c4" opacity=".45">
+    <circle cx="540" cy="790" r="445" mask="url(#hilal)"/>
+    <polygon transform="translate(470 1240) rotate(-20) scale(250)" points="0,-1 0.2245,-0.309 0.951,-0.309 0.3633,0.118 0.5878,0.809 0,0.382 -0.5878,0.809 -0.3633,0.118 -0.951,-0.309 -0.2245,-0.309"/>
+  </g>
+</svg>
+<div class="golge"></div>
+<div class="icerik"><h1>{{metin}}</h1></div>
+<div class="kapanis">{{kapanis}}</div>
+<img class="logo-alt" src="../logos/bm_kutu_planlama.png">
+</div></body></html>
